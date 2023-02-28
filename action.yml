@@ -18,7 +18,7 @@ inputs:
     description: Description field for the status check when the PR is up to date. Default is empty.
     required: false
   tags:
-    description: Whitespace-separated list of tags that the PR must be up to date with. Required when called on pull_request, but currently defaults to `input.tag` if that is set for back compat.
+    description: Whitespace-separated list of tags or branches that the PR must be up to date with. Required when called on pull_request, but currently defaults to `input.tag` if that is set for back compat.
     required: false
   tag:
     description: Tag that PRs must be up to date with. Required when called on push.

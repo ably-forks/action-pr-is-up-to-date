@@ -27,30 +27,12 @@ function init_repo {
 	git config --local gc.auto 0
 	echo "::endgroup::"
 
-	echo "::group::Fetching tags"
-	gitfetch --depth=1 origin tag "${TAGS[@]}" || die "Failed to fetch specified tags"
-	mapfile -t TAGS < <(git tag --list --sort=committerdate "${TAGS[@]}")
-	echo "Tags, in order:"
+	echo "::group::Fetching base branches"
 	local TAG
 	for TAG in "${TAGS[@]}"; do
-		printf " - %s: %s\n" "$TAG" "$(/usr/bin/git rev-parse --verify "$TAG")"
-	done
-	echo "::endgroup::"
-
-	echo "::group::Fetching $BRANCH"
-	echo "Fetching first commit"
-	gitfetch --depth=1 origin "$BRANCH"
-	local TAG
-	for TAG in "${TAGS[@]}"; do
-		if ! git merge-base --is-ancestor "$TAG" "origin/$BRANCH"; then
-			echo "Fetching commits to $TAG"
-			gitfetch --shallow-exclude="$TAG" origin "$BRANCH"
-			if ! git merge-base --is-ancestor "$TAG" "origin/$BRANCH"; then
-				die "Tag $TAG is not an ancestor of $BRANCH! Aborting."
-			fi
-		else
-			echo "Already have commits to $TAG"
-		fi
+		echo "Fetching $TAG"
+		gitfetch --depth=1 origin "$TAG"
+		git branch $TAG origin/$TAG
 	done
 	echo "::endgroup::"
 }

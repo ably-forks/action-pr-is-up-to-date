@@ -38,9 +38,6 @@ case "$GITHUB_EVENT_NAME" in
 		;;
 	push)
 		[[ -n "$TAG" ]] || die "TAG must be set on $GITHUB_EVENT_NAME"
-		if [[ "$GITHUB_REF" != "refs/tags/$TAG" ]]; then
-			die "Push event for incorrect tag, $GITHUB_REF != refs/tags/$TAG"
-		fi
 		TAGS=( "$TAG" )
 
 		if [[ -n "$PATHS" ]]; then
