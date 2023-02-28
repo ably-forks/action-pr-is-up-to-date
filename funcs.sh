@@ -23,7 +23,7 @@ function git {
 function init_repo {
 	echo "::group::Initializing repo"
 	git init -q .
-	git remote add origin "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+	git remote add origin "https://${GITHUB_ACTOR}:${API_TOKEN}@github.com/${GITHUB_REPOSITORY}"
 	git config --local gc.auto 0
 	echo "::endgroup::"
 
